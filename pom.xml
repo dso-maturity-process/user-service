@@ -228,7 +228,6 @@
 			<artifactId>domain-model</artifactId>
 			<version>${domain.model.version}</version>
 		</dependency>
-
 		<!-- DMP DAOs -->
 		<dependency>
 			<groupId>com.governmentcio.dmp</groupId>
