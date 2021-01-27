@@ -10,6 +10,13 @@ package com.governmentcio.dmp.userservice.controller;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +32,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.governmentcio.dmp.Application;
+import com.governmentcio.dmp.dao.RoleDao;
 import com.governmentcio.dmp.utility.ServiceHealth;
 
 /**
@@ -44,7 +52,26 @@ class UserServiceControllerIntegrationTests {
 
 	HttpHeaders headers = new HttpHeaders();
 
+	@PersistenceContext
+	EntityManager entityManager;
+
 	private static final String BASE_URL = "/user";
+
+	@Test
+	@Transactional
+	public void whenPathExpressionIsUsedForSingleValuedAssociation_thenCreatesImplicitInnerJoin() {
+		
+		//org.hibernate.exception.GenericJDBCException: could not advance using next()
+
+
+		Set<RoleDao> resultList = entityManager
+				.createQuery("SELECT u.roleDao FROM UserRoleDao u", RoleDao.class)
+				.getResultStream().collect(Collectors.toSet());
+
+		assertNotNull(resultList);
+
+		// Assertions...
+	}
 
 	/**
 	 *

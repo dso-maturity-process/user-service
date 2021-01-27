@@ -5,8 +5,12 @@ package com.governmentcio.dmp.service;
 
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -46,6 +50,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRoleRepository userRoleRepository;
+
+	@PersistenceContext
+	EntityManager entityManager;
 
 	/**
 	 * Logger instance.
@@ -407,6 +414,41 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Iterable<RoleDao> getRoles() {
 		return roleRepository.findAll();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.governmentcio.dmp.service.UserService#getUserProjectRoles(java.lang.
+	 * Long, java.lang.Long)
+	 */
+	@Override
+	public Iterable<Role> getUserProjectRoles(final Long userId,
+			final Long projectId) {
+
+		Query q = entityManager.createNativeQuery(
+				"SELECT c.id, c.roletype, c.name, c.description "
+						+ "FROM User a, user_role b, Role c WHERE "
+						+ "a.id =:id and a.id = b.USER_ID and b.ROLE_ID = c.id and b.projectid =:project_id",
+				RoleDao.class);
+
+		q.setParameter("id", userId);
+		q.setParameter("project_id", projectId);
+
+		List<RoleDao> roleDaos = q.getResultList();
+
+		Set<Role> roles = new HashSet<Role>();
+
+		for (RoleDao roleDao : roleDaos) {
+			Role roleToAdd = DomainFactory.createRole(roleDao);
+			if (null != roleToAdd) {
+				roles.add(roleToAdd);
+			}
+		}
+
+		return roles;
+
 	}
 
 }

@@ -185,6 +185,16 @@ public class UserServiceController {
 
 	/**
 	 * 
+	 */
+	@GetMapping("/getUserProjectRoles")
+	public Iterable<Role> getUserProjectRoles(
+			@RequestParam(value = "userId", required = true) Long userId,
+			@RequestParam(value = "projectId", required = true) Long projectId) {
+		return userService.getUserProjectRoles(userId, projectId);
+	}
+
+	/**
+	 * 
 	 * @param name
 	 * @return
 	 */
