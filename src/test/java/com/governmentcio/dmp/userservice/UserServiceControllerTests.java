@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -179,6 +181,7 @@ class UserServiceControllerTests {
 	 * 
 	 */
 	@Test
+	@Transactional
 	public void test_Adding_then_Removing_Role_from_User() {
 
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
@@ -232,6 +235,29 @@ class UserServiceControllerTests {
 		Set<Role> roles = userWithRoles.getRoles();
 
 		Iterator<Role> iter = roles.iterator();
+
+		while (iter.hasNext()) {
+			Role r = iter.next();
+			assertTrue(
+					r.getRoleType().name().equals(RoleType.SECURITY_ANALYST.name()));
+		}
+
+		// Get user roles for a project
+
+		parameters = "?userId=" + user.getId() + "&projectId=1000";
+
+		ResponseEntity<Iterable<Role>> responseRoles = restTemplate.exchange(
+				createURLWithPort("/getUserProjectRoles" + parameters), HttpMethod.GET,
+				entity, new ParameterizedTypeReference<Iterable<Role>>() {
+				});
+
+		assertNotNull(response);
+
+		assertTrue(response.getStatusCode() == HttpStatus.OK);
+
+		Iterable<Role> userRolesForProject = responseRoles.getBody();
+
+		iter = userRolesForProject.iterator();
 
 		while (iter.hasNext()) {
 			Role r = iter.next();

@@ -8,110 +8,104 @@ import com.governmentcio.dmp.model.User;
 
 public interface UserService {
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.governmentcio.dmp.userservice.controller.UserService#login(java.lang.
-	 * String, java.lang.String)
+	 * @param userName
+	 * @param password
+	 * @return
 	 */
 	AccessCredentialDao login(String userName, String password);
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.governmentcio.dmp.userservice.controller.UserService#getUserByName(java
-	 * .lang.String)
+	 * @param userName
+	 * @return
 	 */
 	User getUserByName(String userName);
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see com.governmentcio.dmp.userservice.controller.UserService#getUsers()
+	 * @return
 	 */
 	Iterable<User> getUsers();
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.governmentcio.dmp.userservice.controller.UserService#addUser(java.lang.
-	 * String, java.lang.String, java.lang.String, java.lang.String)
+	 * @param firstName
+	 * @param lastName
+	 * @param userName
+	 * @param password
+	 * @return
 	 */
 	User addUser(String firstName, String lastName, String userName,
 			String password);
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.governmentcio.dmp.userservice.controller.UserService#addUserToRole(java
-	 * .lang.String, java.lang.String, java.lang.Long)
+	 * @param userName
+	 * @param roleType
+	 * @param projectId
+	 * @throws Exception
 	 */
 	void addUserToRole(String userName, String roleType, Long projectId)
 			throws Exception;
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.governmentcio.dmp.userservice.controller.UserService#removeUserFromRole
-	 * (java.lang.String, java.lang.String)
+	 * @param userName
+	 * @param roleType
+	 * @throws Exception
 	 */
 	void removeUserFromRole(String userName, String roleType) throws Exception;
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.governmentcio.dmp.userservice.controller.UserService#removeUser(java.
-	 * lang.String)
+	 * @param userName
 	 */
 	void removeUser(String userName);
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.governmentcio.dmp.userservice.controller.UserService#updateUser(com.
-	 * governmentcio.dmp.model.User)
+	 * @param user
+	 * @return
+	 * @throws UserServiceException
 	 */
 	User updateUser(User user) throws UserServiceException;
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.governmentcio.dmp.userservice.controller.UserService#getRoleByType(java
-	 * .lang.String)
+	 * @param type
+	 * @return
 	 */
 	Role getRoleByType(String type);
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.governmentcio.dmp.userservice.controller.UserService#addRole(java.lang.
-	 * String, java.lang.String, java.lang.String)
+	 * @param type
+	 * @param name
+	 * @param description
+	 * @return
 	 */
 	Role addRole(String type, String name, String description);
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.governmentcio.dmp.userservice.controller.UserService#removeRole(java.
-	 * lang.String)
+	 * @param roleType
 	 */
 	void removeRole(String roleType);
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see com.governmentcio.dmp.userservice.controller.UserService#getRoles()
+	 * @return
 	 */
 	Iterable<RoleDao> getRoles();
+
+	/**
+	 * 
+	 * @param userId
+	 * @param projectId
+	 * @return
+	 */
+	Iterable<Role> getUserProjectRoles(final Long userId, final Long projectId);
 
 }
