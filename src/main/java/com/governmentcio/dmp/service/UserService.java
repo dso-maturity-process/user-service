@@ -106,6 +106,6 @@ public interface UserService {
 	 * @param projectId
 	 * @return
 	 */
-	Iterable<Role> getUserProjectRoles(final Long userId, final Long projectId);
+	Iterable<Role> getUserRolesByProject(final Long userId, final Long projectId);
 
 }

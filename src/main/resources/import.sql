@@ -10,5 +10,7 @@ insert into role(id, roletype, name, description) values(10004,'SECURITY_ANALYST
 
 insert into user_role(user_id, role_id, projectID) values(10001, 10001, 90001);
 insert into user_role(user_id, role_id, projectID) values(10002, 10004, 90002);
+insert into user_role(user_id, role_id, projectID) values(10003, 10001, 90003);
+insert into user_role(user_id, role_id, projectID) values(10003, 10004, 90003);
 
 

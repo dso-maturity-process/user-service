@@ -253,7 +253,7 @@ public class UserServiceImpl implements UserService {
 			throw new UserServiceException("Role ]" + roleType + "] not found.");
 		}
 
-		Set<UserRoleDao> userRoleDaos = userDao.getUserRoleDaos();
+		Set<UserRoleDao> userRoleDaos = new HashSet<>(userDao.getUserRoleDaos());
 
 		for (UserRoleDao userRoleDao : userRoleDaos) {
 			if (userRoleDao.getUserDao().equals(userDao)
@@ -424,7 +424,7 @@ public class UserServiceImpl implements UserService {
 	 * Long, java.lang.Long)
 	 */
 	@Override
-	public Iterable<Role> getUserProjectRoles(final Long userId,
+	public Iterable<Role> getUserRolesByProject(final Long userId,
 			final Long projectId) {
 
 		Query q = entityManager.createNativeQuery(

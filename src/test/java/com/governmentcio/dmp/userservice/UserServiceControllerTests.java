@@ -206,7 +206,7 @@ class UserServiceControllerTests {
 		// Add User to Role
 
 		String parameters = "?userName=" + user.getUserName() + "&roleType="
-				+ RoleType.SECURITY_ANALYST.name() + "&projectId=1000";
+				+ RoleType.PROJECT_MANAGER.name() + "&projectId=90003";
 
 		ResponseEntity<Void> responseVoid = restTemplate.exchange(
 				createURLWithPort("/addUserToRole" + parameters), HttpMethod.POST,
@@ -238,17 +238,18 @@ class UserServiceControllerTests {
 
 		while (iter.hasNext()) {
 			Role r = iter.next();
-			assertTrue(
-					r.getRoleType().name().equals(RoleType.SECURITY_ANALYST.name()));
+			assertTrue(r.getRoleType().name().equals(RoleType.PROJECT_MANAGER.name())
+					|| r.getRoleType().name().equals(RoleType.SECURITY_ANALYST.name()));
 		}
 
 		// Get user roles for a project
 
-		parameters = "?userId=" + user.getId() + "&projectId=1000";
+		parameters = "?userId=" + user.getId() + "&projectId=90003";
 
 		ResponseEntity<Iterable<Role>> responseRoles = restTemplate.exchange(
-				createURLWithPort("/getUserProjectRoles" + parameters), HttpMethod.GET,
-				entity, new ParameterizedTypeReference<Iterable<Role>>() {
+				createURLWithPort("/getUserRolesByProject" + parameters),
+				HttpMethod.GET, entity,
+				new ParameterizedTypeReference<Iterable<Role>>() {
 				});
 
 		assertNotNull(response);
@@ -262,13 +263,13 @@ class UserServiceControllerTests {
 		while (iter.hasNext()) {
 			Role r = iter.next();
 			assertTrue(
-					r.getRoleType().name().equals(RoleType.SECURITY_ANALYST.name()));
+					r.getRoleType().name().equals(RoleType.PROJECT_MANAGER.name()));
 		}
 
 		// Now remove the Role from the User
 
 		parameters = "?userName=" + user.getUserName() + "&roleType="
-				+ RoleType.SECURITY_ANALYST.name();
+				+ RoleType.PROJECT_MANAGER.name();
 
 		responseVoid = restTemplate.exchange(
 				createURLWithPort("/removeUserFromRole" + parameters), HttpMethod.POST,
@@ -300,8 +301,8 @@ class UserServiceControllerTests {
 
 		while (iter.hasNext()) {
 			Role r = iter.next();
-			if (r.getRoleType().name().equals(RoleType.SECURITY_ANALYST.name())) {
-				fail("Role " + RoleType.SECURITY_ANALYST.name()
+			if (r.getRoleType().name().equals(RoleType.PROJECT_MANAGER.name())) {
+				fail("Role " + RoleType.PROJECT_MANAGER.name()
 						+ " was not removed from " + user.getUserName());
 			}
 		}
